@@ -1,13 +1,18 @@
 import Image from "next/image";
+import cardPic from "@/public/cardPic.jpeg";
 
 interface Product {
   id: number;
-  attributes: Array<{
-    product_id: string;
+  attributes: {
     product_title: string;
     product_status: string;
-    product_image: object;
-  }>;
+    product_id: string;
+    product_price: number;
+    createdAt: string;
+    updatedAt: string;
+    publisedAt: string;
+    quantity_number: number;
+  };
 }
 
 interface Products {
@@ -17,13 +22,17 @@ interface Products {
 export async function getAllProducts(): Promise<Products> {
   try {
     const token = process.env.API_TOKEN;
-    const response = await fetch("http://127.0.0.1:1337/api/product", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      cache: "no-store",
-    });
+    // console.log(token);
+    const response = await fetch(
+      "http://127.0.0.1:1337/api/products?populate=images",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: "no-store",
+      }
+    );
     const data = await response.json();
     if (response.ok) {
       console.log("Fetch products: ", data);
@@ -41,12 +50,22 @@ export default async function Home() {
   const products = await getAllProducts();
   return (
     <main>
-      <h1>Home</h1>
-      {products.data.map((product) => (
-        product.attributes.map((prod) => (
-          <h1>{prod.product_title}</h1>
-        ))
-      ))}
+      <div className="grid p-20 gap-5 xl:grid-cols-4">
+        {products.data.map((product) => (
+          <div>
+            <div className="card p-5 mb-4">
+              <Image
+                className="h-48 bg-contain"
+                src={cardPic}
+                alt="produc_img"
+              />
+              <h1 className="font-serif font-medium text-3xl">
+                {product.attributes.product_title}
+              </h1>
+            </div>
+          </div>
+        ))}
+      </div>
     </main>
   );
 }
