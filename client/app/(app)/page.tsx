@@ -8,6 +8,7 @@ interface Product {
     product_status: string;
     product_id: string;
     product_price: number;
+    product_image: any;
     createdAt: string;
     updatedAt: string;
     publisedAt: string;
@@ -48,12 +49,23 @@ export async function getAllProducts(): Promise<Products> {
 
 export default async function Home() {
   const products = await getAllProducts();
+  // const {
+  //   data: {
+  //     attributes: {
+  //       formats: {
+  //         medium: { url }
+  //       }
+  //     }
+  //   }
+  // } =
+  console.log(products.data);
   return (
     <main>
       <div className="grid p-20 gap-5 xl:grid-cols-4">
         {products.data.map((product) => (
           <div>
             <div className="card p-5 mb-4">
+              {/* {console.log(product.attributes.product_image.data)} */}
               <Image
                 className="h-48 bg-contain"
                 src={cardPic}
