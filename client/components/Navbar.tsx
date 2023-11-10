@@ -7,15 +7,21 @@ import Link from "next/link";
 export default function Navbar() {
   const pathname = usePathname();
   return (
-    <nav className="flex justify-between px-9 py-10 bg-orange-700">
+    <nav
+      style={{ backgroundColor: "#3498db" }}
+      className="flex text-white justify-between px-9 h-14 overflow-y-hidden items-center py-10 bg-orange-700 font-sans"
+    >
       <h1>Logo</h1>
       <div className="flex gap-12">
         {NavLinks.map((link) => {
           const isActive = pathname === link.path;
-          console.log(isActive);
 
           return (
-            <Link key={link.id} href={link.path}>
+            <Link
+              className={`${isActive && "underline text-yellow-400"}`}
+              key={link.id}
+              href={link.path}
+            >
               {link.name}
             </Link>
           );

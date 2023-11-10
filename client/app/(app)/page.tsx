@@ -1,5 +1,11 @@
 import Image from "next/image";
-import cardPic from "@/public/cardPic.jpeg";
+import FilterCategories from "./FilterCategories";
+import ItemDetails from "@/components/ItemDetails";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ak&s Business",
+};
 
 interface Product {
   id: number;
@@ -13,6 +19,7 @@ interface Product {
     updatedAt: string;
     publisedAt: string;
     quantity_number: number;
+    categories: string;
   };
 }
 
@@ -36,7 +43,7 @@ export async function getAllProducts(): Promise<Products> {
     );
     const data = await response.json();
     if (response.ok) {
-      console.log("Fetch products: ", data);
+      // console.log("Fetch products: ", data);
       return data;
     } else {
       return Promise.reject("Failed to fetch");
@@ -49,23 +56,19 @@ export async function getAllProducts(): Promise<Products> {
 
 export default async function Home() {
   const products = await getAllProducts();
-  // const {
-  //   data: {
-  //     attributes: {
-  //       formats: {
-  //         medium: { url }
-  //       }
-  //     }
-  //   }
-  // } =
-  console.log(products.data);
+
   return (
     <main>
-      <div className="grid p-20 gap-5 xl:grid-cols-4">
+      <FilterCategories />
+      <div className="grid p-20 gap-5 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
+        {products.data.map((product) => (
+          <ItemDetails key={product.id} product={product.attributes} />
+        ))}
+      </div>
+      {/* <div className="grid p-20 gap-5 xl:grid-cols-4">
         {products.data.map((product) => (
           <div>
             <div className="card p-5 mb-4">
-              {/* {console.log(product.attributes.product_image.data)} */}
               <Image
                 className="h-48 bg-contain"
                 src={cardPic}
@@ -77,7 +80,7 @@ export default async function Home() {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </main>
   );
 }

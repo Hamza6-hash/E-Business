@@ -382,6 +382,17 @@ export interface ApiProductProduct extends Schema.CollectionType {
     product_id: Attribute.UID & Attribute.Required;
     product_price: Attribute.Float & Attribute.Required;
     quantity_number: Attribute.Integer & Attribute.Required;
+    categories: Attribute.Enumeration<
+      [
+        'Fashions',
+        'Beauty',
+        'Sports',
+        'Workout',
+        'Entertainments',
+        'Home Decors'
+      ]
+    > &
+      Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

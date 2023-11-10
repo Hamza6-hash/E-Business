@@ -48,6 +48,18 @@
     "quantity_number": {
       "type": "integer",
       "required": true
+    },
+    "categories": {
+      "type": "enumeration",
+      "enum": [
+        "Fashions",
+        "Beauty",
+        "Sports",
+        "Workout",
+        "Entertainments",
+        "Home Decors"
+      ],
+      "required": true
     }
   }
 }
