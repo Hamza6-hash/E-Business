@@ -4,12 +4,29 @@ import Image from "next/image";
 import cardPic from "@/public/cardPic.jpeg";
 
 export default function ItemDetails({ product }: { product: any }) {
+  // show icons on hover over images
   const [isHover, setIsHover] = useState(false);
-  // console.log(product);
 
   function setHover() {
     setIsHover(!isHover);
   }
+
+  // console.log(product);
+  // console.log(
+  //   "product image: ",
+  //   product.product_image.data.attributes.formats.medium.url
+  // );
+
+  // destructuring the image url
+  const {
+    data: {
+      attributes: {
+        formats: {
+          medium: { url },
+        },
+      },
+    },
+  } = product.product_image;
 
   return (
     <div
@@ -17,7 +34,16 @@ export default function ItemDetails({ product }: { product: any }) {
       onMouseEnter={setHover}
       onMouseLeave={setHover}
     >
-      <Image className="bg-contain h-64" src={cardPic} alt="produc_img" />
+      {url && (
+        <Image
+          width={300}
+          height={300}
+          className="bg-contain h-64"
+          src={`http://127.0.0.1:1337${url}`}
+          alt="produc_img"
+        />
+      )}
+
       <p className="text-lg font-normal whitespace-pre-line">
         {product.product_title}
       </p>

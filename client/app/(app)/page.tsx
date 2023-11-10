@@ -5,6 +5,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Ak&s Business",
+  description: "A modern business with modern concepts",
 };
 
 interface Product {
@@ -14,12 +15,12 @@ interface Product {
     product_status: string;
     product_id: string;
     product_price: number;
-    product_image: any;
     createdAt: string;
     updatedAt: string;
     publisedAt: string;
     quantity_number: number;
     categories: string;
+    product_image: object;
   };
 }
 
@@ -32,11 +33,12 @@ export async function getAllProducts(): Promise<Products> {
     const token = process.env.API_TOKEN;
     // console.log(token);
     const response = await fetch(
-      "http://127.0.0.1:1337/api/products?populate=images",
+      "http://127.0.0.1:1337/api/products?populate=product_image",
       {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multiform/data",
         },
         cache: "no-store",
       }
@@ -56,6 +58,7 @@ export async function getAllProducts(): Promise<Products> {
 
 export default async function Home() {
   const products = await getAllProducts();
+  // console.log("All Products: ", products.data);
 
   return (
     <main>
@@ -65,22 +68,6 @@ export default async function Home() {
           <ItemDetails key={product.id} product={product.attributes} />
         ))}
       </div>
-      {/* <div className="grid p-20 gap-5 xl:grid-cols-4">
-        {products.data.map((product) => (
-          <div>
-            <div className="card p-5 mb-4">
-              <Image
-                className="h-48 bg-contain"
-                src={cardPic}
-                alt="produc_img"
-              />
-              <h1 className="font-serif font-medium text-3xl">
-                {product.attributes.product_title}
-              </h1>
-            </div>
-          </div>
-        ))}
-      </div> */}
     </main>
   );
 }
